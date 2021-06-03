@@ -1,6 +1,6 @@
 # dweb.js
 
-Scratch pad for a decentralizd web app javascript API 
+Scratch pad for a decentralized web app javascript API 
 
 ## Usage Examples
 
@@ -13,6 +13,7 @@ let dweb = new DWeb('com.mywebapp:<documentid>', {type: 'diode', network: 'prene
 
 console.log(dweb);
 > {
+    self,
     peers: ... ,
     data: ... ,
     utils: ...,
@@ -46,11 +47,25 @@ channel.on("mouse", (peer, event) => {
 
 ```javascript
 
-let db = dweb.data.sql.create("<documentid>")
+# Object tree
+let data = dweb.data.attachTree("<documentid>", {mergeStrategy: "callback"})
 
-db.
+data.on("merge", (peer, changeset) => {
+  if (has_document_write_access(peer)) return true;
+  else return false;
+}
+
+# Sql 
+let sql = await dweb.data.attachSql("<documentid>", {mergeStrategy: "leader"})
+if (sql.leader == dweb.self) {
+   ...
+} else {
+   ...
+} 
 
 ```
+
+**TODO**: Read one braid and gun and add example of making a change and listening to that change, same on the sql side of things... 
 
 
 # Background - Data
@@ -71,12 +86,12 @@ For direct peer 2 peer communication authenticity depends on the checks during t
 
 ### SQLite 
 
-This storage is compatible with the leader based sync mode and can potentially be read synchronized to all clients. There could also be a mode where different transaction sets are tried to be merged, but this would neccesarily result in a certain number of conflicts. That need conflict resolution approaches
+This storage is compatible with leader based sync mode and can potentially be read synchronized to all clients. There could also be a mode where different transaction sets are tried to be merged, but this would neccesarily result in a certain number of conflicts. That need conflict resolution approaches
 
 ### Braid / Gun Trees
 
 These storages with CRDT mode
 
-https://gun.eco/
-https://datatracker.ietf.org/doc/html/draft-toomim-httpbis-braid-http
+* https://gun.eco/
+* https://datatracker.ietf.org/doc/html/draft-toomim-httpbis-braid-http
 
