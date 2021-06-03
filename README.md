@@ -1,6 +1,6 @@
 # dweb.js
 
-Scratch pad for a decentralized web app javascript API 
+Scratchpad for a decentralized web app javascript API 
 
 ## Usage Examples
 
@@ -24,16 +24,16 @@ console.log(dweb);
 ## Peers
 
 ```javascript
-# Peers
+// Peers
 let contacts = dweb.peers.getContacts()
 let online = dweb.peers.getOnlineContacts()
 
-# Handshaking ?
+// Handshaking ?
 let ref = dweb.peers.createMeetingPoint()
 # On another node:
 dweb.peers.joinMeetingPoint(ref)
 
-# Broadcast Channels
+// Broadcast Channels
 let channel = dweb.peers.joinChannel("cursor")
 window.on("mousemove", (event) => {
   channel.send({type: "mouse", x: event.x, y: event.y})
@@ -47,7 +47,7 @@ channel.on("mouse", (peer, event) => {
 
 ```javascript
 
-# Object tree
+// Object tree
 let data = dweb.data.attachTree("<documentid>", {mergeStrategy: "callback"})
 
 data.on("merge", (peer, changeset) => {
@@ -55,7 +55,7 @@ data.on("merge", (peer, changeset) => {
   else return false;
 }
 
-# Sql 
+// Sql 
 let sql = await dweb.data.attachSql("<documentid>", {mergeStrategy: "leader"})
 if (sql.leader == dweb.self) {
    ...
@@ -65,28 +65,28 @@ if (sql.leader == dweb.self) {
 
 ```
 
-**TODO**: Read one braid and gun and add example of making a change and listening to that change, same on the sql side of things... 
+**TODO**: Read one braid and gun and add an example of making a change and listening to that change, same on the SQL side of things... 
 
 
 # Background - Data
 
 ## Sync modes
 
-In a decentralized system there a couple of different possiblities to implement sync and data sharing modes:
+In a decentralized system there a couple of different possibilities to implement sync and data sharing modes:
 
-* Leader based - One of the peers is effectively data owner and all modifications have to reach him, reads though can be cached. Potentially the whole data set can be cached.
+* Leader-based - One of the peers is effectively data owner and all modifications have to reach him, reads though can be cached. Potentially the whole data set can be cached.
 * Merge - Any peer can make modifications and submit them to other peers, on conflicting modifications a conflict resolution algorithm is used.
-* CRDT - Modifications are strict delta changes, that can be synced conflict free. 
+* CRDT - Modifications are strict delta changes, that can be synced conflict-free. 
 
 ## Authenticity
 
-For direct peer 2 peer communication authenticity depends on the checks during the handshake, but for gossiping protocols there needs to be some form of message signature mechanism in order to proof which client did send what message.
+For direct peer-2-peer communication, authenticity depends on the checks during the handshake, but for gossiping protocols, there needs to be some form of message signature mechanism to prove which client did send what message.
 
 ## Stores
 
 ### SQLite 
 
-This storage is compatible with leader based sync mode and can potentially be read synchronized to all clients. There could also be a mode where different transaction sets are tried to be merged, but this would neccesarily result in a certain number of conflicts. That need conflict resolution approaches
+This storage is compatible with leader-based sync mode and can potentially be read synchronized to all clients. There could also be a mode where different transaction sets are tried to be merged, but this would necessarily result in a certain number of conflicts. That need conflict resolution approaches
 
 ### Braid / Gun Trees
 
