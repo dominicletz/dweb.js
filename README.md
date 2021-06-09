@@ -2,6 +2,15 @@
 
 Scratchpad for a decentralized web app javascript API 
 
+**TODO**
+
+- Check and get inspired by
+    - https://github.com/yjs/yjs
+    - https://news.ycombinator.com/item?id=27424496 
+    - https://github.com/yousefed/reactive-crdt
+    - https://github.com/pubkey/rxdb
+
+
 ## Usage Examples
 
 ```javascript
